@@ -41,7 +41,6 @@ from PandaSQLite import PandaSQLiteDB
 db = PandaSQLiteDB("my_database.sql")
 
 # Import raw data -- must only be done once!
-
 # Import example CSV data
 db.import_data("my_table", "my_csv.csv", format="csv")
 
