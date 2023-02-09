@@ -43,16 +43,13 @@ db = PandaSQLiteDB("my_database.sql")
 # Import raw data -- must only be done once!
 
 # Import example CSV data
-db.import_data("table_1", "my_csv.csv", format="csv")
-
-# Import example excel table
-db.import_data("table_2", "my_excel.xls", format="excel")
+db.import_data("my_table", "my_csv.csv", format="csv")
 
 # Execute query with no return value
-db.execute("INSERT INTO table_1 VALUES (...)")
+db.execute("INSERT INTO my_table VALUES (...)")
 
 # Query dataframe with return values
-df = db.query("SELECT * FROM \"table_1\"")
+df = db.query("SELECT * FROM my_table")
 ```
 
 For a more comprehensive showcase of features, check out the examples in the examples directory to get started.
