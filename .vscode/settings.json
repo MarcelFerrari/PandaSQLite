@@ -1,0 +1,24 @@
+{
+    "jupyter.kernels.filter": [
+        {
+            "path": "/Users/marcelferrari/opt/miniconda3/bin/python",
+            "type": "pythonEnvironment"
+        },
+        {
+            "path": "/home/dphpc/.local/share/jupyter/kernels/local-venv/kernel.json",
+            "type": "jupyterKernelspec"
+        },
+        {
+            "path": "/usr/local/bin/python3.11",
+            "type": "pythonEnvironment"
+        },
+        {
+            "path": "/usr/local/bin/python3.9",
+            "type": "pythonEnvironment"
+        },
+        {
+            "path": "/usr/bin/python3",
+            "type": "pythonEnvironment"
+        }
+    ]
+}
