@@ -41,8 +41,8 @@ class PandasDB():
     
     # Create table from df
     @commit_on_complete
-    def create_table(self, tname: str, df: pd.DataFrame) -> None:
-        df.to_sql(tname, self.con, if_exists='fail', index=False)
+    def create_table(self, tname: str, df: pd.DataFrame, if_exists='fail') -> None:
+        df.to_sql(tname, self.con, if_exists, index=False)
 
     # Update table
     @commit_on_complete
@@ -79,15 +79,15 @@ class PandasDB():
         self.con.commit()
 
     @commit_on_complete
-    def import_data(self, tname: str, fpath: str, format: str, **kwargs)-> None:
+    def import_data(self, tname: str, fpath: str, format: str, if_exists='fail', **kwargs)-> None:
         if(format == "csv"):
-            self.create_table(tname, pd.read_csv(fpath, **kwargs))
+            self.create_table(tname, pd.read_csv(fpath, **kwargs), if_exists)
         elif(format == "fwf"):
-            self.create_table(tname, pd.read_fwf(fpath, **kwargs))
+            self.create_table(tname, pd.read_fwf(fpath, **kwargs), if_exists)
         elif(format =="excel"):
-            self.create_table(tname, pd.read_excel(fpath, **kwargs))
+            self.create_table(tname, pd.read_excel(fpath, **kwargs), if_exists)
         elif(format == "json"):
-            self.create_table(tname, pd.read_json(fpath, **kwargs))
+            self.create_table(tname, pd.read_json(fpath, **kwargs), if_exists)
         else:
             frmts = ["csv", "fwf", "excel", "json"]
             print(("Unsupported format.\n"
