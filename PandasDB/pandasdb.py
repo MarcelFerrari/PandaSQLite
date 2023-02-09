@@ -1,7 +1,5 @@
 import pandas as pd
 import sqlite3 as sql
-from pydb_colors import bcolors
-
 
 class PandasDB():
     # --- Class constructor ---- #
