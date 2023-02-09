@@ -63,7 +63,8 @@ class PandasDB():
     @commit_on_complete
     def delete_table(self, tname: str) -> None:
         self.cur.execute(f"DROP TABLE IF EXISTS \"{tname}\"")
-        print(f"Deleted table {tname}")
+        if self.verbose:
+            print(f"Deleted table {tname}")
 
     # Execute SQL query with no output 
     @log_query   
