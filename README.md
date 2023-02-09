@@ -1,8 +1,8 @@
-# PandasDB
+# PandaSQLite
 
-PandasDB is a lightweight wrapper library that combines the power of SQLite databases with the ease of use of Python numerical libraries like pandas, numpy, scipy, etc. This library allows you to store and manage data using a modern SQLite database, while still being able to use query results seamlessly in python.
+PandaSQLite is a lightweight wrapper library that combines the power of SQLite databases with the ease of use of Python numerical libraries like pandas, numpy, scipy, etc. This library allows you to store and manage data using a modern SQLite database, while still being able to use query results seamlessly in python.
 
-## Why bother with PandasDB?
+## Why bother with PandaSQLite?
 
 ### Features
 - Fast and reliable data storage and management.
@@ -20,14 +20,14 @@ PandasDB is a lightweight wrapper library that combines the power of SQLite data
 
 ## Getting Started
 ### Requirements
-PandasDB only supports Python 3 and is built on top of the `pandas` and `sqlite3` packages.
+PandaSQLite only supports Python 3 and is built on top of the `pandas` and `sqlite3` packages.
 
 ### Installation
 
-To start using PandasDB, simply install the library using pip:
+To start using PandaSQLite, simply install the library using pip:
 
 ```
-pip install PandasDB
+pip install PandaSQLite
 ```
 
 Once the library is installed, you can start using it in your Python projects or Jupyter notebooks.
@@ -35,10 +35,10 @@ Once the library is installed, you can start using it in your Python projects or
 ### Basic usage
 This script defines the most basic usage of the library. The raw data must be imported in the database only once.
 ```py
-from pandasdb import PandasDB
+from PandaSQLite import PandaSQLite
 
 # Create/open database
-db = PandasDB("my_database.sql")
+db = PandaSQLite("my_database.sql")
 
 # Import raw data -- must only be done once!
 

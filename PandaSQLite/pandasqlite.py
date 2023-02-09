@@ -1,7 +1,7 @@
 import pandas as pd
 import sqlite3 as sql
 
-class PandasDB():
+class PandaSQLiteDB():
     # --- Class constructor ---- #
     def __init__(self, db_path: str, auto_commit: bool = True, verbose: bool = False):
         self.con = sql.connect(db_path)
@@ -47,7 +47,9 @@ class PandasDB():
     # Update table
     @commit_on_complete
     def update_table(self, tname: str, df: pd.DataFrame) -> None:
-        self.replace_table(self.get_table(tname).update(df))
+        tmp = self.get_table(tname)
+        tmp.update(df)
+        self.replace_table(tname, tmp)
 
     # Update table from df
     @commit_on_complete
