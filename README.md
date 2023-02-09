@@ -58,6 +58,6 @@ df = db.query("SELECT * FROM \"table_1\"")
 For a more comprehensive showcase of features, check out the examples in the examples directory to get started.
 
 ### Common problems
-`TypeError: 'NoneType' object is not iterable`
+`TypeError: 'NoneType' object is not iterable`:<br>
 This issue is usually caused by executing a query with no return data in the `db.query()` function, which should only be used for queries that return a table ("SELECT" queries). Use the `db.execute()` function for queries with no return data (e.g: "INSERT", "UPDATE", "ALTER", ... queries).
 <hr>
