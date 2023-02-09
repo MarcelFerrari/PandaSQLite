@@ -19,6 +19,8 @@ PandasDB is a lightweight wrapper library that combines the power of SQLite data
 - Speed up your code automatically using indices.
 
 ## Getting Started
+### Requirements
+PandasDB only supports Python 3 and is built on top of the `pandas` and `sqlite3` packages.
 
 ### Installation
 
