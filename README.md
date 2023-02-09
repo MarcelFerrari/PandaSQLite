@@ -53,4 +53,4 @@ db.execute("INSERT INTO table_1 VALUES (...)")
 df = db.query("SELECT * FROM \"table_1\"")
 ```
 
- For a more comprehensive showcase of features, check out the examples in the examples directory to get started.
+For a more comprehensive showcase of features, check out the examples in the examples directory to get started.
