@@ -35,10 +35,10 @@ Once the library is installed, you can start using it in your Python projects or
 ### Basic usage
 This script defines the most basic usage of the library. The raw data must be imported in the database only once.
 ```py
-from PandaSQLite import PandaSQLite
+from PandaSQLite import PandaSQLiteDB
 
 # Create/open database
-db = PandaSQLite("my_database.sql")
+db = PandaSQLiteDB("my_database.sql")
 
 # Import raw data -- must only be done once!
 
@@ -56,6 +56,9 @@ df = db.query("SELECT * FROM \"table_1\"")
 ```
 
 For a more comprehensive showcase of features, check out the examples in the examples directory to get started.
+
+### Documentation
+The documentation for PandaSQLite is [available here](https://github.com/MarcelFerrari/PandaSQLite/wiki)
 
 ### Common problems
 `TypeError: 'NoneType' object is not iterable`:<br>
