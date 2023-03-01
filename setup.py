@@ -1,8 +1,12 @@
-from distutils.core import setup
+from setuptools import setup
+
+with open("README.md", "r", encoding="utf-8") as fh:
+    long_description = fh.read()
+
 setup(
   name = 'PandaSQLite',
   packages = ['PandaSQLite'],
-  version = '1.0',      
+  version = '1.1',      
   license='MIT',
   description = 'PandaSQLite is a lightweight library that combines the power of SQLite databases with the ease of use of Python numerical libraries like pandas, numpy, scipy, etc.',
   author = 'Marcel Ferrari',
@@ -20,4 +24,6 @@ setup(
     # 'Programming Language :: Python :: 3.5',
     # 'Programming Language :: Python :: 3.6',
   ],
+  long_description=long_description,
+  long_description_content_type='text/markdown',
 )

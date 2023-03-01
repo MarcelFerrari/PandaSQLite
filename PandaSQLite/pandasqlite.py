@@ -1,34 +1,23 @@
+# --- System imports ---
 import pandas as pd
 import sqlite3 as sql
+import os
+
+# --- PandaSQLite imports ---
+from .errors import *
+from .io import extension_to_format
+from .decorator import *
 
 class PandaSQLiteDB():
     # --- Class constructor ---- #
     def __init__(self, db_path: str, auto_commit: bool = True, verbose: bool = False):
+        self.db_path = os.path.realpath(db_path)
         self.con = sql.connect(db_path)
         self.cur = self.con.cursor()
         self.auto_commit = auto_commit
         self.verbose = verbose
-    
-    # --- Useful decorators --- #
-
-    def log_query(func):
-        def wrapper(self, *args, **kwargs):
-            if self.verbose:
-                print(f"Executed: {args[0]}") 
-            return func(self, *args, **kwargs)
-        return wrapper
-
-    def commit_on_complete(func):
-        def wrapper(self, *args, **kwargs):
-            result = func(self, *args, **kwargs)
-            # Auto-commit changes
-            if self.auto_commit:
-                self.commit()
-            return result
-        return wrapper
 
     # --- Table operations --- #
-
     # Execute query and return df
     @log_query
     def query(self, query: str) -> pd.DataFrame:
@@ -42,14 +31,14 @@ class PandaSQLiteDB():
     # Create table from df
     @commit_on_complete
     def create_table(self, tname: str, df: pd.DataFrame, if_exists='fail') -> None:
-        df.to_sql(tname, self.con, if_exists, index=False)
+        df.to_sql(tname, self.con, if_exists=if_exists, index=False)
 
-    # Update table
-    @commit_on_complete
-    def update_table(self, tname: str, df: pd.DataFrame) -> None:
-        tmp = self.get_table(tname)
-        tmp.update(df)
-        self.replace_table(tname, tmp)
+    # # Update table
+    # @commit_on_complete
+    # def update_table(self, tname: str, df: pd.DataFrame) -> None:
+    #     tmp = self.get_table(tname)
+    #     tmp.update(df)
+    #     self.replace_table(tname, tmp)
 
     # Update table from df
     @commit_on_complete
@@ -82,23 +71,42 @@ class PandaSQLiteDB():
         self.con.commit()
 
     @commit_on_complete
-    def import_data(self, tname: str, fpath: str, format: str, if_exists='fail', **kwargs)-> None:
-        if(format == "csv"):
-            self.create_table(tname, pd.read_csv(fpath, **kwargs), if_exists)
-        elif(format == "fwf"):
-            self.create_table(tname, pd.read_fwf(fpath, **kwargs), if_exists)
-        elif(format =="excel"):
-            self.create_table(tname, pd.read_excel(fpath, **kwargs), if_exists)
-        elif(format == "json"):
-            self.create_table(tname, pd.read_json(fpath, **kwargs), if_exists)
+    def import_data(self, tname: str, fpath: str, format: str = None, if_exists = 'fail', **kwargs) -> None:
+        _, file_extension = os.path.splitext(fpath)
+        
+        if not format:
+            try:
+                format = extension_to_format[file_extension]
+            except:
+                raise UnableToDetermineImportFormat(file_extension)
+
+        if format in ["csv", "fwf", "excel", "json", "parquet", "feather", "pickle"]:
+            read_func = getattr(pd, f"read_{format}")
+            self.create_table(tname, read_func(fpath, **kwargs), if_exists)
         else:
-            frmts = ["csv", "fwf", "excel", "json"]
-            print(("Unsupported format.\n"
-                   "The supported formats are:\n"
-                   f"{frmts}"))
+            raise UnsupportedImportFormat(format)
+
+    @commit_on_complete
+    def import_db(self, fpath, if_exists = 'fail', **kwargs) -> None:
+        
+        if type(fpath) == PandaSQLiteDB:
+            fpath = fpath.db_path
+            
+        if self.db_path == os.path.realpath(fpath):
+            raise AliasedDBMergeOperation
+
+        other = PandaSQLiteDB(fpath, auto_commit=False)
+        tables = other.show_tables()
+
+        if if_exists == "fail":
+            for i in self.show_tables()["name"]:
+                for j in tables["name"]:
+                    if i == j:
+                        raise ConflictingTableName(i, self.db_path)
+
+        for tname in tables["name"]:
+            self.create_table(tname, other.get_table(tname), if_exists=if_exists)
 
     # --- Class destructor --- #
     def __del__(self):
-        if self.auto_commit:
-            self.commit()
         self.con.close()
