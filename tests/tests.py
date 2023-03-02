@@ -100,6 +100,12 @@ class TestPandaSQLiteDB(unittest.TestCase):
         with self.assertRaises(Exception):
             db1.import_db(db1)
 
+        with self.assertRaises(Exception):
+            db1.import_db("db1.sql")
+
+        with self.assertRaises(Exception):
+            db1.import_db(10)
+            
         # Correct
         db1.import_db(db2)
         self.assertTrue(db1.get_table("test_table_1").equals(db2.get_table("test_table_2")))

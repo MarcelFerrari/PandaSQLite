@@ -87,15 +87,20 @@ class PandaSQLiteDB():
             raise UnsupportedImportFormat(format)
 
     @commit_on_complete
-    def import_db(self, fpath, if_exists = 'fail', **kwargs) -> None:
+    def import_db(self, other, if_exists = 'fail', **kwargs) -> None:        
         
-        if type(fpath) == PandaSQLiteDB:
-            fpath = fpath.db_path
+        if type(other) == PandaSQLiteDB:
+            if self.db_path == other.db_path:
+                raise AliasedDBMergeOperation
             
-        if self.db_path == os.path.realpath(fpath):
-            raise AliasedDBMergeOperation
+        elif type(other) == str:
+            other = PandaSQLiteDB(other, auto_commit=False)
 
-        other = PandaSQLiteDB(fpath, auto_commit=False)
+            if self.db_path == os.path.realpath(other):
+                raise AliasedDBMergeOperation
+        else:
+            raise TypeError(f"Expecting str or PandaSQLiteDB, got {type(other)}")
+
         tables = other.show_tables()
 
         if if_exists == "fail":
