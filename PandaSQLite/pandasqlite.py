@@ -10,7 +10,7 @@ from .decorator import *
 
 class PandaSQLiteDB():
     # --- Class constructor ---- #
-    def __init__(self, db_path: str, auto_commit: bool = True, verbose: bool = False):
+    def __init__(self, db_path: str, auto_commit: bool = False, verbose: bool = False):
         self.db_path = os.path.realpath(db_path)
         self.con = sql.connect(db_path)
         self.cur = self.con.cursor()
